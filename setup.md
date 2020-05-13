@@ -122,8 +122,8 @@
 	*         context-csgmmzqmfsd   cluster-csgmmzqmfsd   user-csgmmzqmfsd   jonggyou
 	~~~
 
-1. 완료되었다.  
 	이로서 모든 리소스 생성은 기본으로 새로운 네임스페이스에서 이루어 진다. (물론 명시적으로 다른 네이밍 스페이스에서 처리 가능하다.)
 
 
-# 데시보드 살펴보기
+---
+완료하셨습니다.

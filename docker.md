@@ -1,104 +1,8 @@
 
-# 애플리케이션 작성
-
-Node.JS로 만들어진 사용자를 관리하는 애플리케이션을 작성해 보도록 한다. 이 애플리케이션은 MySQL에 새로운 유저와 테이블을 사용한다.
-
-## 소스 가져오기
-
-애플리케이션의 소스는 미리 만들어진 것을 가져와서 사용하고, MySQL은 미리 만들어진 도커 이미지를 사용한다.
-
-1. git 에서 기존에 만들어진 애플리케이션 소스를 가져옵니다.
-
-    ~~~
-    git clone https://github.com/jonggyoukim/hands-on-oke-sample
-    ~~~
-
-    hands-on-oke-sample 디렉토리로 이동을 한다.
-    ~~~
-    cd hands-on-oke-sample
-    ~~~
+# 애플리케이션 컨테이너화
 
 
-## 데이터베이스 시작  ( ***📌 미리 설정했다면 건너뛰기*** )
-<!--
-1. 인스턴스 포트 열기
-
-    ~~~sh
-    sudo firewall-cmd --add-port=3306/tcp --permanent
-    sudo systemctl restart firewalld
-    ~~~
--->
-1. MySQL 컨테이너 실행하기
-
-    ~~~
-    docker run --name mydb -e MYSQL_ROOT_PASSWORD=mypassword -p 3306:3306 -d shiftyou/oke-mysql 
-    ~~~
-
-
-## 애플리케이션 시작
-<!--
-1. 인스턴스 포트 열기
-
-    ~~~sh
-    sudo firewall-cmd --add-port=8080/tcp --permanent
-    sudo systemctl restart firewalld
-    ~~~
--->
-
-1. 환경설정하기
-
-    해당 애플리케이션은 MySQL에 접속하기 위해서 환경변수가 필요한다.  
-    미리 기동해 놓은 mysql에 대한 설정을 한다.
-    ~~~sh
-    export MYSQL_SERVICE_HOST=localhost
-    ~~~
-
-1. 애플리케이션 실행하기  
-
-    먼저 관련 패키지를 설치한다.
-    ~~~sh
-    npm install
-    ~~~
-
-    화면이 하나라서 백그라운드로 실행한다.
-    ~~~
-    npm start &
-    ~~~
-
-    다음과 같이 나오면 실행한 것이다.
-    ~~~
-    > oke-sample-app@1.0.0 start /home/jonggyou_k/hands-on-oke-sample
-    > node app.js
-
-    host:localhost
-    user:test
-    password:Welcome1
-    database:sample
-    Server running on port: 8080
-    Connected to database
-    ~~~
-
-1. curl로 체크한다.
-
-    현재는 클라우드쉘을 사용하여 클라우드의 네트워크를 사용할 수 없어 브라우저로는 접근이 불가능하다. 그래서 curl로 확인해 보도록 한다.
-    ~~~
-    curl localhost:8080
-    ~~~
-
-    HTML 소스가 보일 것이며 성공한 것이다.  
-    
-
-1. 마치기
-
-    백그라운드로 실행하고 있는 애플리케이션을 종료하고 확인한다.
-
-    ~~~
-    kill %1
-    jobs
-    ~~~
-
-
-# 애플리케이션을 도커 이미지로 만들기
+## 도커 이미지로 만들기
 
 이번 단계는 위에서 만든 애플리케이션을 도커 이미지로 만드는 과정이다.
 도커 이미지를 만들기 위해서 Dockerfile 이 필요하며 미리 생성되어 있다.
@@ -174,10 +78,64 @@ Node.JS로 만들어진 사용자를 관리하는 애플리케이션을 작성�
     다음과 같이 oke-sample 이 만들어져 있음을 알 수 있다.
     ~~~sh
     REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
-    oke-sample           latest              26b2fdd8129f        9 seconds ago       82.5MB
+    oke-sample           latest              1323f3fc39e1        2 minutes ago       82.5MB
     node                 8-alpine            2b8fcdc6230a        4 months ago        73.5MB
     shiftyou/oke-mysql   latest              c34069dbe43e        6 months ago        437MB
     ~~~
+
+
+
+## 네트워크 생성
+
+1. 도커 컨테이너끼리 통신을 하기 위하여 네트워크를 생성한다.
+
+    ~~~
+    docker network create mynet
+    ~~~
+
+1. 생성된 네트워크를 확인한다.
+    ~~~
+    docker network ls
+    ~~~
+
+    다음과 같이 리스트가 나온다.
+    ~~~
+    NETWORK ID          NAME                DRIVER              SCOPE
+    6632d666d166        bridge              bridge              local
+    1e90eb9fbc84        host                host                local
+    71d68d2f56e6        mynet               bridge              local
+    b4da934ce7a3        none                null                local
+    ~~~
+
+    앞으로는 생성된 네트워크를 사용하기 위하여 docker 명령어 중 `--network mynet` 을 추가해 준다.
+
+
+# 데이터베이스 시작
+<!--
+1. 인스턴스 포트 열기
+
+    ~~~sh
+    sudo firewall-cmd --add-port=3306/tcp --permanent
+    sudo systemctl restart firewalld
+    ~~~
+-->
+
+1. 기존 MySQL 컨테이너 정지&삭제 하기
+
+    기존의 MySQL은 default 네트워크를 사용한다. 이를 mynet을 사용하게 하기 위해 삭제한다.
+    ~~~
+    docker stop mydb
+    docker rm mydb
+    ~~~
+
+1. MySQL 컨테이너 실행하기
+
+    생성된 네트워크를 이용하는 MySQL을 실행한다.
+    ~~~
+    docker run --network mynet --name mydb -e MYSQL_ROOT_PASSWORD=mypassword -p 3306:3306 -d shiftyou/oke-mysql 
+    ~~~
+
+
 
 # 애플리케이션을 컨테이너에서 수행하기
 
@@ -188,7 +146,7 @@ Node.JS로 만들어진 사용자를 관리하는 애플리케이션을 작성�
 
     최종적으로  다음과 같이 애플리케이션을 실행한다.
     ~~~
-    docker run --name app  -e MYSQL_SERVICE_HOST=mydb -e -d -p 8080:8080 sample-app
+    docker run --network mynet --name myapp  -e MYSQL_SERVICE_HOST=mydb -d -p 8080:8080 oke-sample
     ~~~
 
     1. 옵션설정 : 필요한 환경변수 대입하기
@@ -217,43 +175,43 @@ Node.JS로 만들어진 사용자를 관리하는 애플리케이션을 작성�
     현재 운영중인 Container를 출력한다.
 
     ~~~
-    $ docker ps
-
-    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                               NAMES
-    9fc6ec72293b        sample-app          "docker-entrypoint.s…"   39 seconds ago      Up 38 seconds       0.0.0.0:8080->8080/tcp              app
+    docker ps
     ~~~
 
-    **9fc6ec72293b** 이라는 Container ID를 사용하여 해당 Container가 가지는 IP를 확인 한다.
+    다음과 같이 수행됨을 알 수 있다.
     ~~~
-    $ sudo docker inspect -f  "{{ .NetworkSettings.IPAddress }}" 컨테이너아이디
-
-    172.18.0.3
+    CONTAINER ID        IMAGE                COMMAND                  CREATED              STATUS              PORTS                               NAMES
+    e2880e1c1328        oke-sample           "docker-entrypoint.s…"   20 seconds ago       Up 19 seconds       0.0.0.0:8080->8080/tcp              myapp
+    6788ecb29b3a        shiftyou/oke-mysql   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3306->3306/tcp, 33060/tcp   mydb
     ~~~
-
 
 1. 테스트 하기
 
-    웹브라우저로 `http://호스트IP:8080/`을 접속해 봅니다.  
-    **호스트IP**는 해당 인스턴스의 공유IP 이다.
-    
-    이전에 애플리케이션으로 수행한 화면과 동일하지만, 표시되는 IP Address가 VM의 IP Address가 아닌 컨테이너의 IP Address를 나타내고 있다.
+    이전 애플리케이션 테스트와 마찬가지로 클라우드쉘을 사용하여 클라우드의 네트워크를 사용할 수 없어 브라우저로는 접근이 불가능하다. 그래서 curl로 확인해 보도록 한다.
 
+    ~~~
+    curl localhost:8080
+    ~~~
 
-    ![](images/app2.png)
-    
-    표시되는 IP Address가 현재 Docker Container의 IP Address를 나타내고 있다.
-    
-    이로써 애플리케이션을 도커이미지로 만들고, 컨테이너로 수행완료하였습니다.  
+    HTML 소스가 보일 것이며 성공한 것이다.  
+    이로써 애플리케이션을 도커이미지로 만들고, 컨테이너로 수행완료하였다.  
 
 
 1. 종료하기
-    1. 도커로 실행중인 mysql을 종료하고 확인한다.
+    1. 도커로 실행중인 mysql을 종료한다.
         ~~~
         docker stop mydb
         docker rm mydb
+        ~~~
+    1. 도커로 실행중인 애플리케이션을 종료한다.
+        ~~~
+        docker stop myapp
+        docker rm myapp
+        ~~~
+    1. 확인한다.
+        ~~~
         docker ps -a
         ~~~
-
 ---
 완료하셨습니다.
 
