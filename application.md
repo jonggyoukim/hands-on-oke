@@ -100,7 +100,8 @@ Node.JS로 만들어진 사용자를 관리하는 애플리케이션을 작성�
     kill %1
     jobs
     ~~~
-    
+
+
 ---
-완료하셨습니다.
+완료하셨습니다. <a href="javascript:history.back();">뒤로가기</a>
 
