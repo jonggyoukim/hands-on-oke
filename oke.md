@@ -47,9 +47,9 @@
 	New config written to the Kubeconfig file /home/jonggyou_k/.kube/config
 	~~~
 
-1. 이제 OKE 클러스터에 접근할 수 있습니다.  
+1. 이제 OKE 클러스터에 접근할 수 있다.  
 
-	다음의 명령어를 통해 현재 클러스터의 정보를 볼 수 있습니다.
+	다음의 명령어를 통해 현재 클러스터의 정보를 볼 수 있다.
 	~~~
 	$ kubectl cluster-info
 

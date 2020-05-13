@@ -1,2 +1,5 @@
 # hands-on-oke
-Hands on for OKE
+
+수정중입니다.  
+
+2020/05/16 업데이트 됩니다.
