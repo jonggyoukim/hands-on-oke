@@ -51,7 +51,7 @@
     ~~~
     docker push <사용자ID>/<이미지명>
     ~~~
-    아래와 같이 `docker.io/<사용자ID>/이미지명` 으로 push 하는 로그들이 나오고 완료된다.
+    아래와 같이 docker.io 에 `<사용자ID>/이미지명` 으로 push 하는 로그들이 나오고 완료된다.
     ~~~
     $ docker push shiftyou/oke-sample
 
@@ -141,7 +141,7 @@
 
 
 
- `` ``
+    `` ``
 
 1. tag 생성
 
@@ -195,24 +195,231 @@
 
 ## OKE에 배포하기
 
+OKE는 오라클에서 제공하는 쿠버네티스 환경이다. 따라서 여타 다른 쿠버네티스 운영과 동일하게 한다.
+
+현재 `yaml` 디렉토리에 보면 배포를 위한 yaml 파일이 두개 있다.
+- oke-mysql.yaml : DB 배포를 위한 yaml
+- oke-sample.yaml : APP 배포를 위한 yaml
+
+위 두개의 yaml 파일로 배포를 한다.
+
 ### MySQL 배포하기
+
+oke-mysql.yaml은 다음의 내용을 포함한다.
+~~~yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oke-mysql
+  namespace: default
+  labels:
+    app: oke-mysql
+spec:
+  selector:
+    matchLabels:
+      app: oke-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: oke-mysql
+    spec:
+      containers:
+        - name: oke-mysql
+          image: shiftyou/oke-mysql
+          ports:
+          - containerPort: 3306
+            name: oke-mysql
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: mypassword
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oke-mysql
+  namespace: default
+  labels:
+    app: oke-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: oke-mysql
+  type: ClusterIP
+~~~
 
 1. Deployment 
 
+- 애플리케이션의 이름은 oke-mysql 으로 한다.
+- 이미지는 shiftyou/oke-mysql 이미지를 사용한다.
+- 포트는 3306번을 사용한다.
+- 환경변수로 MYSQL_ROOT_PASSWORD 값으로 mypassword를 사용한다.
+- namespace는 default로 한다.
+
 1. Service
+
+- oke-mysql 로 명명된 Deployment를 Service 로 노출한다.
+- 서비스는 ClusterIP 타입이다.
+- 포트는 3306번이다.
+- namespace는 default로 한다.
+
+1. 배포
+
+MySQL은 각자 배포하지 않고 하나만 배포하도록 한다. 그래서 default 네임스페이스에 배포하도록 구성되어 있다.
+
+만약 두번째 이상 배포하려 한다면 이미 배포되었기 때문에 변경사항이 없다.
+
+배포는 다음과 같이 한다.
+~~~
+kubectl apply -f oke-mysql.yaml
+~~~
+
+다음과 같이 현재 배포 상태를 볼 수 있다.
+~~~
+kubectl get all -n default
+~~~
+
+`-n default`는 현재 oke-mysql 이름의 서비스가 default 라는 이름의 네임스페이스에 배포가 되도록 구성되고 배포되어 있다. 그래서 default 라는 이름의 네임스페이스의 상태를 보기 위해서 `-n default`를 옵션으로 준다.
+
+옵션을 주지 않으면 이전에 `kubectl config set-context --current --namespace jonggyou` 라고 명령하여 변경된 기본 네임스페이스를 사용한다.
+
+결과로 다음과 같이 출력된다.
+~~~
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/oke-mysql-6d4675d7f6-v5fkh   1/1     Running   0          2m18s
+
+
+NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+service/kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP    3d6h
+service/oke-mysql    ClusterIP   10.96.49.43   <none>        3306/TCP   2m18s
+
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/oke-mysql   1/1     1            1           2m18s
+
+NAME                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/oke-mysql-6d4675d7f6   1         1         1       2m18s
+~~~
 
 
 ### 애플리케이션 배포하기
 
+oke-sample.yaml 은 다음의 내용을 포함한다.
+~~~yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oke-sample
+  labels:
+    app: oke-sample
+spec:
+  selector:
+    matchLabels:
+      app: oke-sample
+  template:
+    metadata:
+      labels:
+        app: oke-sample
+    spec:
+      containers:
+      - name: oke-sample
+        image: shiftyou/oke-sample
+        env:
+        - name: MYSQL_SERVICE_HOST
+          value: oke-mysql.default
+        ports:
+        - containerPort: 8080
+          name: oke-sample
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oke-sample
+  labels:
+    app: oke-sample
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: oke-sample
+  type: LoadBalancer
+  ~~~
 
 
 1. Deployment 
 
+- 애플리케이션의 이름은 oke-sample 으로 한다.
+- 이미지는 shiftyou/oke-sample 이미지를 사용한다.
+- 포트는 8008번으을 사용한다.
+- 환경변수로 MYSQL_SERVICE_HOST 값으로 oke-mysql.default를 사용한다.
+- namespace는 현재 기본 namespace를 한다.
+
 1. Service
 
+- oke-sample 로 명명된 Deployment를 Service 로 노출한다.
+- 서비스는 LoadBalancer 타입이다.
+- 포트는 80번을 사용한다. 타겟포트는 8080이다.
+- namespace는 현재 기본 namespace를 한다.
+
+1. 배포
+
+yaml 파일에서 보듯이 mysql의 주소를 `oke-mysql.default` 라고 하였다. 이는 default 네임스페이스에 서비스 하고 있는 oke-mysql 를 지정하는 것이다.
+
+다음과 같이 배포한다.
+~~~
+kubectl apply -f oke-sample.yaml
+~~~
+
+그리고 상태는 oke-mysql을 배포했을 때와 다르게 `-n default`라는 옵션이 필요없다. 굳이 한다면 `-n jonggyou`로 하지만 안 해도 기본으로 지정한 jonggyou 네임스페이스를 사용한다.
+
+~~~
+kubectl get all
+~~~
+
+다음과 같이 잘 배포되어 서비스됨이 출력된다.
+~~~
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/oke-sample-5d59bb9596-wgk6n   1/1     Running   0          11s
+
+
+NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
+
+
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/oke-sample   1/1     1            1           11s
+
+NAME                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/oke-sample-5d59bb9596   1         1         1       11s
+~~~
+
+출력중에 Service 부분을 보면 LoadBalancer 를 사용하는데, 아직 EXTERNAL-IP는 준비 중으로 보인다.
+~~~
+NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
+~~~
+
+이는 OCI의 로드밸런서 서비스를 프로비져닝 하고 있음을 의미한다.
+다시 service 에 대해서 설펴보도록 한다.
+~~~
+kubectl get svc
+~~~
+그러면 다음과 같이 EXTERNAL-IP가 나타난다.
+~~~
+NAME         TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)        AGE
+oke-sample   LoadBalancer   10.96.6.202   140.238.27.54   80:30151/TCP   5m41s
+~~~
 
 ## 테스트 하기
 
+앞서 본 oke-sample 애플리케이션은 로드밸런서로 서비스 중이며, 이 아이피는 EXTERNAL-IP인  140.238.27.54 으로 나타난다. 그리고 포트는 80 포트로 서비스 중이며 내부에서는 8080으로 포워딩 한다.
+
+브라우저를 사용하여 140.238.27.54:80 로 접속해 보도록 한다.
+
+![](images/oke7.png)
 
 ---
 완료하셨습니다. <a href="javascript:history.back();">뒤로가기</a>
