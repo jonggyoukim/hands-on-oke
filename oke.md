@@ -421,5 +421,8 @@ oke-sample   LoadBalancer   10.96.6.202   140.238.27.54   80:30151/TCP   5m41s
 
 ![](images/oke7.png)
 
+몇 개의 연락처를 등록하면 다음과 같이 화면이 된다.
+
+![](images/app.png)
 ---
 완료하셨습니다. <a href="javascript:history.back();">뒤로가기</a>
