@@ -205,103 +205,114 @@ OKE는 오라클에서 제공하는 쿠버네티스 환경이다. 따라서 여�
 
 ### MySQL 배포하기
 
-oke-mysql.yaml은 다음의 내용을 포함한다.
-~~~yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: oke-mysql
-  namespace: default
-  labels:
-    app: oke-mysql
-spec:
-  selector:
-    matchLabels:
+MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 실행해 놓았다.  
+
+<details>
+<summary> 실행하는 방법은 다음과 같다. 이번 핸즈온에서는 skip한다.</summary>
+<div markdown="1">
+
+  oke-mysql.yaml은 다음의 내용을 포함한다.
+
+  ~~~yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: oke-mysql
+    namespace: default
+    labels:
       app: oke-mysql
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
+  spec:
+    selector:
+      matchLabels:
         app: oke-mysql
-    spec:
-      containers:
-        - name: oke-mysql
-          image: shiftyou/oke-mysql
-          ports:
-          - containerPort: 3306
-            name: oke-mysql
-          env:
-          - name: MYSQL_ROOT_PASSWORD
-            value: mypassword
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: oke-mysql
-  namespace: default
-  labels:
-    app: oke-mysql
-spec:
-  ports:
-  - port: 3306
-  selector:
-    app: oke-mysql
-  type: ClusterIP
-~~~
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          app: oke-mysql
+      spec:
+        containers:
+          - name: oke-mysql
+            image: shiftyou/oke-mysql
+            ports:
+            - containerPort: 3306
+              name: oke-mysql
+            env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: mypassword
+  ---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: oke-mysql
+    namespace: default
+    labels:
+      app: oke-mysql
+  spec:
+    ports:
+    - port: 3306
+    selector:
+      app: oke-mysql
+    type: ClusterIP
+  ~~~
 
-1. Deployment 
+  1. Deployment 
 
-- 애플리케이션의 이름은 oke-mysql 으로 한다.
-- 이미지는 shiftyou/oke-mysql 이미지를 사용한다.
-- 포트는 3306번을 사용한다.
-- 환경변수로 MYSQL_ROOT_PASSWORD 값으로 mypassword를 사용한다.
-- namespace는 default로 한다.
+      - 애플리케이션의 이름은 oke-mysql 으로 한다.
+      - 이미지는 shiftyou/oke-mysql 이미지를 사용한다.
+      - 포트는 3306번을 사용한다.
+      - 환경변수로 MYSQL_ROOT_PASSWORD 값으로 mypassword를 사용한다.
+      - namespace는 default로 한다.
 
-1. Service
+  1. Service
 
-- oke-mysql 로 명명된 Deployment를 Service 로 노출한다.
-- 서비스는 ClusterIP 타입이다.
-- 포트는 3306번이다.
-- namespace는 default로 한다.
+      - oke-mysql 로 명명된 Deployment를 Service 로 노출한다.
+      - 서비스는 ClusterIP 타입이다.
+      - 포트는 3306번이다.
+      - namespace는 default로 한다.
 
-1. 배포
+  1. 배포
 
-MySQL은 각자 배포하지 않고 하나만 배포하도록 한다. 그래서 default 네임스페이스에 배포하도록 구성되어 있다.
+      MySQL은 각자 배포하지 않고 하나만 배포하도록 한다. 그래서 default 네임스페이스에 배포하도록 구성되어 있다.
 
-만약 두번째 이상 배포하려 한다면 이미 배포되었기 때문에 변경사항이 없다.
+      만약 두번째 이상 배포하려 한다면 이미 배포되었기 때문에 변경사항이 없다.
 
-배포는 다음과 같이 한다.
-~~~
-kubectl apply -f oke-mysql.yaml
-~~~
+      배포는 다음과 같이 한다.
+      ~~~
+      kubectl apply -f oke-mysql.yaml
+      ~~~
 
-다음과 같이 현재 배포 상태를 볼 수 있다.
-~~~
-kubectl get all -n default
-~~~
+      다음과 같이 현재 배포 상태를 볼 수 있다.
+      ~~~
+      kubectl get all -n default
+      ~~~
 
-`-n default`는 현재 oke-mysql 이름의 서비스가 default 라는 이름의 네임스페이스에 배포가 되도록 구성되고 배포되어 있다. 그래서 default 라는 이름의 네임스페이스의 상태를 보기 위해서 `-n default`를 옵션으로 준다.
+      `-n default`는 현재 oke-mysql 이름의 서비스가 default 라는 이름의 네임스페이스에 배포가 되도록 구성되고 배포되어 있다. 그래서 default 라는 이름의 네임스페이스의 상태를 보기 위해서 `-n default`를 옵션으로 준다.
 
-옵션을 주지 않으면 이전에 `kubectl config set-context --current --namespace jonggyou` 라고 명령하여 변경된 기본 네임스페이스를 사용한다.
+      옵션을 주지 않으면 이전에 `kubectl config set-context --current --namespace jonggyou` 라고 명령하여 변경된 기본 네임스페이스를 사용한다.
 
-결과로 다음과 같이 출력된다.
-~~~
-NAME                             READY   STATUS    RESTARTS   AGE
-pod/oke-mysql-6d4675d7f6-v5fkh   1/1     Running   0          2m18s
-
-
-NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
-service/kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP    3d6h
-service/oke-mysql    ClusterIP   10.96.49.43   <none>        3306/TCP   2m18s
+      결과로 다음과 같이 출력된다.
+      ~~~
+      NAME                             READY   STATUS    RESTARTS   AGE
+      pod/oke-mysql-6d4675d7f6-v5fkh   1/1     Running   0          2m18s
 
 
-NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/oke-mysql   1/1     1            1           2m18s
+      NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+      service/kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP    3d6h
+      service/oke-mysql    ClusterIP   10.96.49.43   <none>        3306/TCP   2m18s
 
-NAME                                   DESIRED   CURRENT   READY   AGE
-replicaset.apps/oke-mysql-6d4675d7f6   1         1         1       2m18s
-~~~
+
+      NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+      deployment.apps/oke-mysql   1/1     1            1           2m18s
+
+      NAME                                   DESIRED   CURRENT   READY   AGE
+      replicaset.apps/oke-mysql-6d4675d7f6   1         1         1       2m18s
+      ~~~
+
+</div>
+</details>
+
 
 
 ### 애플리케이션 배포하기
