@@ -361,68 +361,66 @@ spec:
 
 
 1. Deployment 
-
-- 애플리케이션의 이름은 oke-sample 으로 한다.
-- 이미지는 shiftyou/oke-sample 이미지를 사용한다.
-- 포트는 8008번으을 사용한다.
-- 환경변수로 MYSQL_SERVICE_HOST 값으로 oke-mysql.default를 사용한다.
-- namespace는 현재 기본 namespace를 한다.
+    - 애플리케이션의 이름은 oke-sample 으로 한다.
+    - 이미지는 shiftyou/oke-sample 이미지를 사용한다.
+    - 포트는 8008번으을 사용한다.
+    - 환경변수로 MYSQL_SERVICE_HOST 값으로 oke-mysql.default를 사용한다.
+    - namespace는 현재 기본 namespace를 한다.
 
 1. Service
-
-- oke-sample 로 명명된 Deployment를 Service 로 노출한다.
-- 서비스는 LoadBalancer 타입이다.
-- 포트는 80번을 사용한다. 타겟포트는 8080이다.
-- namespace는 현재 기본 namespace를 한다.
+    - oke-sample 로 명명된 Deployment를 Service 로 노출한다.
+    - 서비스는 LoadBalancer 타입이다.
+    - 포트는 80번을 사용한다. 타겟포트는 8080이다.
+    - namespace는 현재 기본 namespace를 한다.
 
 1. 배포
 
-yaml 파일에서 보듯이 mysql의 주소를 `oke-mysql.default` 라고 하였다. 이는 default 네임스페이스에 서비스 하고 있는 oke-mysql 를 지정하는 것이다.
+    yaml 파일에서 보듯이 mysql의 주소를 `oke-mysql.default` 라고 하였다. 이는 default 네임스페이스에 서비스 하고 있는 oke-mysql 를 지정하는 것이다.
 
-다음과 같이 배포한다.
-~~~
-kubectl apply -f oke-sample.yaml
-~~~
+    다음과 같이 배포한다.
+    ~~~
+    kubectl apply -f oke-sample.yaml
+    ~~~
 
-그리고 상태는 oke-mysql을 배포했을 때와 다르게 `-n default`라는 옵션이 필요없다. 굳이 한다면 `-n jonggyou`로 하지만 안 해도 기본으로 지정한 jonggyou 네임스페이스를 사용한다.
+    그리고 상태는 oke-mysql을 배포했을 때와 다르게 `-n default`라는 옵션이 필요없다. 굳이 한다면 `-n jonggyou`로 하지만 안 해도 기본으로 지정한 jonggyou 네임스페이스를 사용한다.
 
-~~~
-kubectl get all
-~~~
+    ~~~
+    kubectl get all
+    ~~~
 
-다음과 같이 잘 배포되어 서비스됨이 출력된다.
-~~~
-NAME                              READY   STATUS    RESTARTS   AGE
-pod/oke-sample-5d59bb9596-wgk6n   1/1     Running   0          11s
-
-
-NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
+    다음과 같이 잘 배포되어 서비스됨이 출력된다.
+    ~~~
+    NAME                              READY   STATUS    RESTARTS   AGE
+    pod/oke-sample-5d59bb9596-wgk6n   1/1     Running   0          11s
 
 
-NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/oke-sample   1/1     1            1           11s
+    NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+    service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
 
-NAME                                    DESIRED   CURRENT   READY   AGE
-replicaset.apps/oke-sample-5d59bb9596   1         1         1       11s
-~~~
 
-출력중에 Service 부분을 보면 LoadBalancer 를 사용하는데, 아직 EXTERNAL-IP는 준비 중으로 보인다.
-~~~
-NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
-~~~
+    NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/oke-sample   1/1     1            1           11s
 
-이는 OCI의 로드밸런서 서비스를 프로비져닝 하고 있음을 의미한다.
-다시 service 에 대해서 설펴보도록 한다.
-~~~
-kubectl get svc
-~~~
-그러면 다음과 같이 EXTERNAL-IP가 나타난다.
-~~~
-NAME         TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)        AGE
-oke-sample   LoadBalancer   10.96.6.202   140.238.27.54   80:30151/TCP   5m41s
-~~~
+    NAME                                    DESIRED   CURRENT   READY   AGE
+    replicaset.apps/oke-sample-5d59bb9596   1         1         1       11s
+    ~~~
+
+    출력중에 Service 부분을 보면 LoadBalancer 를 사용하는데, 아직 EXTERNAL-IP는 준비 중으로 보인다.
+    ~~~
+    NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+    service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
+    ~~~
+
+    이는 OCI의 로드밸런서 서비스를 프로비져닝 하고 있음을 의미한다.
+    다시 service 에 대해서 설펴보도록 한다.
+    ~~~
+    kubectl get svc
+    ~~~
+    그러면 다음과 같이 EXTERNAL-IP가 나타난다.
+    ~~~
+    NAME         TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)        AGE
+    oke-sample   LoadBalancer   10.96.6.202   140.238.27.54   80:30151/TCP   5m41s
+    ~~~
 
 ## 테스트 하기
 
