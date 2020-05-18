@@ -406,7 +406,7 @@
     이미지는 `shiftyou/oke-sample:v2` 이다.
 
     <details>
-    <summary> 새로운 버젼의 애플리케이션으로 이미지를 관리하기</summary>
+    <summary> 📌 새로운 버젼의 애플리케이션으로 이미지를 관리하기</summary>
     <div markdown="1">
     버젼을 출력하는 파일을 변경합니다.
     

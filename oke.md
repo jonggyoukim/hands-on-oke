@@ -208,7 +208,7 @@ OKE는 오라클에서 제공하는 쿠버네티스 환경이다. 따라서 여�
 MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 실행해 놓았다.  
 
 <details>
-<summary> 실행하는 방법은 다음과 같다. 이번 핸즈온에서는 skip한다.</summary>
+<summary> 📌 실행하는 방법은 다음과 같다. 이번 핸즈온에서는 skip한다.</summary>
 <div markdown="1">
 
   oke-mysql.yaml은 다음의 내용을 포함한다.
@@ -298,6 +298,7 @@ MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 �
       ~~~
       NAME                             READY   STATUS    RESTARTS   AGE
       pod/oke-mysql-6d4675d7f6-v5fkh   1/1     Running   0          2m18s
+      ~~~
 
 
       NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
@@ -307,7 +308,7 @@ MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 �
 
       NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
       deployment.apps/oke-mysql   1/1     1            1           2m18s
-
+    
       NAME                                   DESIRED   CURRENT   READY   AGE
       replicaset.apps/oke-mysql-6d4675d7f6   1         1         1       2m18s
       ~~~
@@ -359,7 +360,7 @@ spec:
   selector:
     app: oke-sample
   type: LoadBalancer
-  ~~~
+~~~
 
 
 1. Deployment 
@@ -398,6 +399,7 @@ spec:
     ~~~
     NAME                              READY   STATUS    RESTARTS   AGE
     pod/oke-sample-5d59bb9596-wgk6n   1/1     Running   0          11s
+    ~~~
 
 
     NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
@@ -406,17 +408,17 @@ spec:
 
     NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
     deployment.apps/oke-sample   1/1     1            1           11s
-
+    
     NAME                                    DESIRED   CURRENT   READY   AGE
     replicaset.apps/oke-sample-5d59bb9596   1         1         1       11s
     ~~~
-
+    
     출력중에 Service 부분을 보면 LoadBalancer 를 사용하는데, 아직 EXTERNAL-IP는 준비 중으로 보인다.
     ~~~
     NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
     service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
     ~~~
-
+    
     이는 OCI의 로드밸런서 서비스를 프로비져닝 하고 있음을 의미한다.
     다시 service 에 대해서 설펴보도록 한다.
     ~~~
