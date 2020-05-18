@@ -265,12 +265,14 @@ MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 �
       - 환경변수로 MYSQL_ROOT_PASSWORD 값으로 mypassword를 사용한다.
       - namespace는 default로 한다.
 
+
   1. Service
 
       - oke-mysql 로 명명된 Deployment를 Service 로 노출한다.
       - 서비스는 ClusterIP 타입이다.
       - 포트는 3306번이다.
       - namespace는 default로 한다.
+
 
   1. 배포
 
@@ -368,12 +370,14 @@ spec:
     - 환경변수로 MYSQL_SERVICE_HOST 값으로 oke-mysql.default를 사용한다.
     - namespace는 현재 기본 namespace를 한다.
 
+
 1. Service
 
     - oke-sample 로 명명된 Deployment를 Service 로 노출한다.
     - 서비스는 LoadBalancer 타입이다.
     - 포트는 80번을 사용한다. 타겟포트는 8080이다.
     - namespace는 현재 기본 namespace를 한다.
+
 
 1. 배포
 
