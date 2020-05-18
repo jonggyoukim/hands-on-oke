@@ -208,7 +208,7 @@ OKE는 오라클에서 제공하는 쿠버네티스 환경이다. 따라서 여�
 MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 실행해 놓았다.  
 
 <details>
-<summary> 📌 실행하는 방법은 다음과 같다. 이번 핸즈온에서는 skip한다.</summary>
+<summary> 📌 실행하는 방법은 여기를 클릭한다. 이번 핸즈온에서는 skip한다.</summary>
 <div markdown="1">
 
   oke-mysql.yaml은 다음의 내용을 포함한다.
@@ -385,6 +385,7 @@ spec:
     yaml 파일에서 보듯이 mysql의 주소를 `oke-mysql.default` 라고 하였다. 이는 default 네임스페이스에 서비스 하고 있는 oke-mysql 를 지정하는 것이다.
 
     다음과 같이 배포한다.
+
     ~~~
     kubectl apply -f oke-sample.yaml
     ~~~
@@ -396,15 +397,13 @@ spec:
     ~~~
 
     다음과 같이 잘 배포되어 서비스됨이 출력된다.
+    
     ~~~
     NAME                              READY   STATUS    RESTARTS   AGE
     pod/oke-sample-5d59bb9596-wgk6n   1/1     Running   0          11s
-    ~~~
-
 
     NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
     service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
-
 
     NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
     deployment.apps/oke-sample   1/1     1            1           11s
@@ -413,13 +412,13 @@ spec:
     replicaset.apps/oke-sample-5d59bb9596   1         1         1       11s
     ~~~
     
-    출력중에 Service 부분을 보면 LoadBalancer 를 사용하는데, 아직 EXTERNAL-IP는 준비 중으로 보인다.
+    출력중에 Service 부분을 보면 LoadBalancer 를 사용하는데, 아직 EXTERNAL-IP는 \<pending>으로 나타낸다.
     ~~~
     NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
     service/oke-sample   LoadBalancer   10.96.6.202   <pending>     80:30151/TCP   11s
     ~~~
     
-    이는 OCI의 로드밸런서 서비스를 프로비져닝 하고 있음을 의미한다.
+    이는 OCI의 로드밸런서 서비스를 프로비져닝 하고 있음을 의미한다.  
     다시 service 에 대해서 설펴보도록 한다.
     ~~~
     kubectl get svc
