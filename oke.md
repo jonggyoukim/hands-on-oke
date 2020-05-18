@@ -1,5 +1,7 @@
 # OKE에 애플리케이션 배포하기
 
+![](images/step4.png)
+
 
 ## Docker Registry 에 push 하기
 
