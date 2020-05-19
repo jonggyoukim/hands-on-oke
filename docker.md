@@ -4,7 +4,7 @@
 ![](images/step3.png)
 
 
-## 도커 이미지로 만들기
+# 도커 이미지로 만들기
 
 이번 단계는 위에서 만든 애플리케이션을 도커 이미지로 만드는 과정이다.
 도커 이미지를 만들기 위해서 Dockerfile 이 필요하며 미리 생성되어 있다.
@@ -87,7 +87,7 @@
 
 
 
-## 네트워크 생성
+# 네트워크 생성
 
 1. 도커 컨테이너끼리 통신을 하기 위하여 네트워크를 생성한다.
 
@@ -151,7 +151,7 @@
     docker run --network mynet --name myapp  -e MYSQL_SERVICE_HOST=mydb -d -p 8080:8080 oke-sample
     ~~~
 
-    1. 옵션설정 : 필요한 환경변수 대입하기
+    - 옵션설정 : 필요한 환경변수 대입하기
 
         이 애플리케이션은 필요한 환경변수 `MYSQL_SERVICE_HOST`가 있다. 이 환경변수는 mysql 이 서비스 되고 있는 호스트를 나타낸니다. 설정하지 않으면 `localhost`로 대입되어 해당 애플리케이션 이미지에는 mysql이 존재하지 않아 애플리케이션이 동작하지 않습니다. 여기에서는 mysql 이 mydb 라는 이름의 컨테이너로 수행되기에 mydb라고 명명한다.
 
@@ -165,7 +165,7 @@
         -e MYSQL_SERVICE_HOST=129.213.149.203 -e MYSQL_SERVICE_USER=test -e MYSQL_SERVICE_PASSWORD=Welcome1 -e MYSQL_SERVICE_DATABASE=sample 
         ~~~
 
-    1. 옵션설정 : 포트 포워딩
+    - 옵션설정 : 포트 포워딩
 
         해당 애프리케이션은 8000 포트로 서비스 됩니다. 그래서 같은 포트로 포워딩 하기위해 다음과 같은 옵션을 사용한다. 앞의 8000 은 호스트의 포트이고, 뒤의 8000은 컨테이너의 포트이다.
         ~~~
@@ -212,20 +212,26 @@
 
 
 1. 종료하기
-    1. 도커로 실행중인 mysql을 종료한다.
-        ~~~
-        docker stop mydb
-        docker rm mydb
-        ~~~
-    1. 도커로 실행중인 애플리케이션을 종료한다.
-        ~~~
-        docker stop myapp
-        docker rm myapp
-        ~~~
-    1. 확인한다.
-        ~~~
-        docker ps -a
-        ~~~
+    
+    도커로 실행중인 mysql을 종료한다.
+    
+    ~~~
+    docker stop mydb
+    docker rm mydb
+    ~~~
+    
+    도커로 실행중인 애플리케이션을 종료한다.
+    
+    ~~~
+    docker stop myapp
+    docker rm myapp
+    ~~~
+    
+    확인한다.
+    
+    ~~~
+    docker ps -a
+    ~~~
 
 
 ---
