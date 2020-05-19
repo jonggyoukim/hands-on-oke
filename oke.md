@@ -3,11 +3,11 @@
 ![](images/step4.png)
 
 
-## Docker Registry 에 push 하기
+# Docker Registry 에 push 하기
 
 도커 이미지를 레지스트리에 push 하기 위해서는 login을 해야 합니다.
 
-### hub.docker.com 에 푸시하기 - Public
+# hub.docker.com 에 푸시하기 - Public
 
 1. login 하기
 
@@ -70,7 +70,7 @@
 
     >누구나 사용 가능한 이미지로 Kubernetes 에서도 secret 정보 필요없이 사용 가능하다.
 
-### OCIR(Oracle Cloud Infrastructure Registry)에 푸시하기 - Private
+## OCIR(Oracle Cloud Infrastructure Registry)에 푸시하기 - Private
 
 1. token 만들기
 
@@ -195,7 +195,7 @@
     >인증된 사용자만 pull 할 수 있는 이미지로 Kubernetes에서 sercret 정보 설정이 필요하다.
 
 
-## OKE에 배포하기
+# OKE에 배포하기
 
 OKE는 오라클에서 제공하는 쿠버네티스 환경이다. 따라서 여타 다른 쿠버네티스 운영과 동일하게 한다.
 
@@ -205,7 +205,7 @@ OKE는 오라클에서 제공하는 쿠버네티스 환경이다. 따라서 여�
 
 위 두개의 yaml 파일로 배포를 한다.
 
-### MySQL 배포하기
+## MySQL 배포하기
 
 MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 실행해 놓았다.  
 
@@ -317,7 +317,7 @@ MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 �
 
 
 
-### 애플리케이션 배포하기
+## 애플리케이션 배포하기
 
 oke-sample.yaml 은 다음의 내용을 포함한다.
 ~~~yaml
@@ -428,7 +428,7 @@ spec:
     oke-sample   LoadBalancer   10.96.6.202   140.238.27.54   80:30151/TCP   5m41s
     ~~~
 
-## 테스트 하기
+# 테스트 하기
 
 앞서 본 oke-sample 애플리케이션은 로드밸런서로 서비스 중이며, 이 아이피는 EXTERNAL-IP인  140.238.27.54 으로 나타난다. 그리고 포트는 80 포트로 서비스 중이며 내부에서는 8080으로 포워딩 한다.
 
