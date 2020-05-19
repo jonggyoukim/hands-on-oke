@@ -132,7 +132,7 @@
 
       ![](images/oke4.png)
 
-      위 화면에서 빨간 박스 부분인 _`cnriar6c4yj1`_ 라는 명이 **_<태넌시-네임스페이스>_** 입니다. 이를 이용하여 로그인을 합니다.
+      위 화면에서 빨간 박스 부분인 `cnriar6c4yj1` 라는 명이 **\<태넌시-네임스페이스\>** 입니다. 이를 이용하여 로그인을 합니다.
     
     - \<사용자ID\>
 
@@ -142,10 +142,10 @@
 
       ![](images/oke5.png)
       
-      위의 화면에서 빨간 박스 부분인 _`oracleidentitycloudservice/jonggyou.kim@oracle.com`_ 라는 명이 **_<사용자ID>_** 입니다.  
-      간단히 _jonggyou.kim@oracle.com_ 으로 나타나지 않고 _oracleidentitycloudservice/jonggyou.kim@oracle.com_ 로 나타나는 이유는 Oracle Identity Cloud Service 에서 연합되었기 때문입니다. 6
+      위의 화면에서 빨간 박스 부분인 `oracleidentitycloudservice/jonggyou.kim@oracle.com` 라는 명이 **\<사용자ID\>** 입니다.  
+      간단히 _jonggyou.kim@oracle.com_ 으로 나타나지 않고 _oracleidentitycloudservice/jonggyou.kim@oracle.com_ 로 나타나는 이유는 Oracle Identity Cloud Service 에서 연합되었기 때문입니다. 7
 
-    Username 항목에는 위의 <태넌시-네임스페이스>/<사용자ID> 를 입력합니다. 위의 화면을 예를 들면 다음과 같습니다.
+    Username 항목에는 위의 **<태넌시-네임스페이스>/<사용자ID>** 를 입력합니다. 위의 화면을 예를 들면 다음과 같습니다.
 
     ~~~
     cnriar6c4yj1/oracleidentitycloudservice/jonggyou.kim@oracle.com
