@@ -7,7 +7,7 @@
 
 도커 이미지를 레지스트리에 push 하기 위해서는 login을 해야 합니다.
 
-# hub.docker.com 에 푸시하기 - Public
+## hub.docker.com 에 푸시하기 - Public
 
 1. login 하기
 
