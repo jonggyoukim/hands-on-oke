@@ -300,13 +300,10 @@ MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 �
       ~~~
       NAME                             READY   STATUS    RESTARTS   AGE
       pod/oke-mysql-6d4675d7f6-v5fkh   1/1     Running   0          2m18s
-      ~~~
-
 
       NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
       service/kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP    3d6h
       service/oke-mysql    ClusterIP   10.96.49.43   <none>        3306/TCP   2m18s
-
 
       NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
       deployment.apps/oke-mysql   1/1     1            1           2m18s
