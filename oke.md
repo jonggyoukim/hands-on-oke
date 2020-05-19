@@ -213,7 +213,7 @@ OKE는 오라클에서 제공하는 쿠버네티스 환경이다. 따라서 여�
 MySQL은 핸즈온에서 공통적으로 사용할 예정이라 1개를 미리 실행해 놓았다.  
 
 <details>
-<summary> 📌 실행하는 방법은 여기를 클릭한다. 이번 핸즈온에서는 skip한다.</summary>
+<summary> 📌 실행되어 있지 않다면 여기를 클릭하여 실행한다.</summary>
 <div markdown="1">
 
   oke-mysql.yaml은 다음의 내용을 포함한다.
