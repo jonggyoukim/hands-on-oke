@@ -197,8 +197,9 @@
 
 - 확장
 
-    ~~~
+    현재 상태를 봅니다. 현재 1개의 pod 으로 구성되어 있음을 알 수 있습니다.
 
+    ~~~
     $ kubectl get pod
     NAME                          READY   STATUS    RESTARTS   AGE
     oke-sample-5d59bb9596-4jw75   1/1     Running   0          8m1s
@@ -212,12 +213,18 @@
     $ kubectl get deploy
     NAME         READY   UP-TO-DATE   AVAILABLE   AGE
     oke-sample   1/1     1            1           3d22h
+    ~~~
 
+    전체 3개의 pod으로 구성하도록 확장합니다.
 
+    ~~~
     $ kubectl scale deployment/oke-sample --replicas=3
     deployment.extensions/oke-sample scaled
+    ~~~
 
+    상태를 살펴봅니다.
 
+    ~~~
     $ kubectl get deploy
     NAME         READY   UP-TO-DATE   AVAILABLE   AGE
     oke-sample   2/3     3            2           3d22h
@@ -236,7 +243,8 @@
     ~~~
 
 
-    서비스의 아이피를 확인한다.
+    서비스의 아이피를 확인합니다.
+
     ~~~
     $ kubectl get svc
 
@@ -244,13 +252,13 @@
     oke-sample   LoadBalancer   10.96.147.85   140.238.27.216   80:32413/TCP   4m54s
     ~~~
         
-    140.238.27.216번 으로 웹브라우저로 접속한다.
+    140.238.27.216번 으로 웹브라우저로 접속합니다.
     
     ![](images/scale1.png)
 
-    화면에서 보이는 IP Address 는 내부 Pod의 IP Address 이다.      
+    화면에서 보이는 IP Address 는 내부 Pod의 IP Address 입니다.      
 
-    F5를 눌러 여러번 리프레쉬를 하면 Service를 통해서 다른 Pod이 불리면 IP Address 항목이 바뀐다.
+    F5를 눌러 여러번 리프레쉬를 하면 Service를 통해서 다른 Pod이 불리면 IP Address 항목이 바뀌는 것을 확인합니다.
     
     ![](images/scale2.png)
 
@@ -259,20 +267,28 @@
 
 - pod 삭제
 
-    아래와 같이 xcmw9로 이름된 pod을 삭제하면 새로운 pod 생성된다.  
-    Replicaset에 의해서 항상 3개의 pod을 유지할 것이다.
+    아래와 같이 xcmw9로 이름된 pod을 삭제하면 새로운 pod 생성됩니다.  
+    Replicaset에 의해서 항상 3개의 pod을 유지할 것입니다.
+
+    현재 상태를 봅니다.
     ~~~
     $ kubectl get pods
+    
     NAME                          READY   STATUS    RESTARTS   AGE
     oke-sample-5d59bb9596-4jw75   1/1     Running   0          10m
     oke-sample-5d59bb9596-s5ngl   1/1     Running   0          2m38s
     oke-sample-5d59bb9596-xcmw9   1/1     Running   0          2m38s
+    ~~~
 
-
+    한개의 pod을 삭제합니다.
+    ~~~
     $ kubectl delete pod oke-sample-5d59bb9596-xcmw9 
+    
     pod "oke-sample-5d59bb9596-xcmw9" deleted
+    ~~~
 
-
+    다시 상태를 봅니다.
+    ~~~
     $ kubectl get pods
     NAME                          READY   STATUS    RESTARTS   AGE
     oke-sample-5d59bb9596-4jw75   1/1     Running   0          10m
@@ -291,18 +307,24 @@
     ~~~
 
 - 축소
+    
+    현재 상태를 확인합니다.
     ~~~
     $ kubectl get pods
     NAME                          READY   STATUS    RESTARTS   AGE
     oke-sample-5d59bb9596-4jw75   1/1     Running   0          14m
     oke-sample-5d59bb9596-km9xh   1/1     Running   0          4m4s
     oke-sample-5d59bb9596-s5ngl   1/1     Running   0          6m56s
+    ~~~
 
-
+    pod의 개수를 2개로 줄입니다.
+    ~~~
     $ kubectl scale deployment/oke-sample --replicas=2
     deployment.extensions/oke-sample scaled
+    ~~~
 
-
+    다시 상태를 살펴봅니다.
+    ~~~
     $ kubectl get pods
     NAME                          READY   STATUS    RESTARTS   AGE
     oke-sample-5d59bb9596-4jw75   1/1     Running   0          15m
@@ -310,6 +332,7 @@
     ~~~
 
 - 종료
+    
     ~~~
     $ cd yaml
 
@@ -331,27 +354,28 @@
 
 ## 애플리케이션 업데이트
 
-1. 다시 애플리케이션을 시작한다.
+1. 다시 애플리케이션을 시작합니다.
+
     ~~~
     $ kubectl apply -f oke-sample.yaml
     deployment.apps/oke-sample created
     service/oke-sample created
     ~~~
 
-    확인한다.
+    현재 상태를 확인합니다.
     ~~~
     $ kubectl get pods
     NAME                          READY   STATUS    RESTARTS   AGE
     oke-sample-5d59bb9596-mvw5j   1/1     Running   0          18s
     ~~~
 
-    pod을 늘인다.
+    pod을 확장합니다.
     ~~~
     $ kubectl scale deployment/oke-sample --replicas=4
     deployment.extensions/oke-sample scaled
     ~~~
 
-    확인한다.
+    다시 확인합니다.
     ~~~
     $ kubectl get pods
     NAME                          READY   STATUS    RESTARTS   AGE
@@ -361,7 +385,7 @@
     oke-sample-5d59bb9596-mvw5j   1/1     Running   0          80s
     ~~~
 
-1. 현재 서비스의 상태를 보면 다음과 같다.
+1. 현재 서비스의 상태를 보면 다음과 같습니다.
 
     ~~~
     $ kubectl get svc
@@ -370,7 +394,7 @@
     oke-sample   LoadBalancer   10.96.147.85   140.238.27.216   80:32413/TCP   4m54s
     ~~~
 
-    세부적인 내용은 다음과 같다.
+    세부적인 내용은 다음과 같습니다.
     ~~~
     $ kubectl describe svc
 
@@ -396,15 +420,15 @@
     Normal  EnsuredLoadBalancer   4m26s  service-controller  Ensured load balancer
     ~~~
 
-    해당 로드밸런스의 IP로 접근을 한다.
+    해당 로드밸런스의 IP로 접근을 합니다.
     ![](images/update1.png)
 
-    위에서 보는 바와 같이 `Version:v1.0` 임을 알 수 있다.
+    위에서 보는 바와 같이 `Version:v1.0` 임을 알 수 있습니다.
     
 1. 소스 업데이트
 
-    이미 새로운 버젼의 애플리케이션 이미지를 미리 업로드 해 놓았다.  
-    이미지는 `shiftyou/oke-sample:v2` 이다.
+    이미 새로운 버젼의 애플리케이션 이미지를 미리 업로드 해 놓았습니다.
+    이미지는 `shiftyou/oke-sample:v2` 입니다.
 
     <details>
     <summary> 📌 새로운 버젼의 애플리케이션으로 이미지를 관리하기</summary>
@@ -433,20 +457,20 @@
     
 1. 애플리케이션 업데이트
 
-    현재상태를 확인한다.
+    현재상태를 확인합니다.
     ~~~
     $ kubectl rollout status deployment/oke-sample
     deployment "oke-sample" successfully rolled out
     ~~~
 
-    이미지를 업데이트 한다.
+    이미지를 업데이트 합니다.
 
     ~~~
     $ kubectl set image deployments/oke-sample oke-sample=shiftyou/oke-sample:v2
     deployment.extensions/oke-sample image updated
     ~~~
 
-    그리고 빠르게 pod을 살펴보면 다음과 같다.
+    그리고 빠르게 pod을 살펴보면 다음과 같습니다.
 
     ~~~
     $ kubectl get pods
@@ -461,7 +485,7 @@
     oke-sample-5d7986d67d-wmlbz   0/1     ContainerCreating   0          3s
     ~~~
 
-    이는 현재 pod을 내리고 새로운 버젼의 pod으로 애플리케이션을 실행하는 것이다. 다시 확인하면 완료되어있다.
+    이는 현재 pod을 내리고 새로운 버젼의 pod으로 애플리케이션을 실행하는 것입니다. 다시 확인하면 완료되어있습니다.
     ~~~
     $ kubectl get pods
     NAME                          READY   STATUS    RESTARTS   AGE
@@ -471,41 +495,41 @@
     oke-sample-5d7986d67d-wmlbz   1/1     Running   0          10s
     ~~~
 
-    이제 브라우저로 접근해 본다. 로드밸런스를 변경이 없으니 같은 IP로 접근한다.
+    이제 브라우저로 접근해 봅니다. 로드밸런스를 변경이 없으니 같은 IP로 접근합니다.
 
     ![](images/update2.png)
 
-    화면에서 보는 바와 같이 `Version:v2.0`으로 변경되었음을 알 수 있다.
+    화면에서 보는 바와 같이 `Version:v2.0`으로 변경되었음을 알 수 있습니다.
 
 1. 롤백
 
-    방금전 업데이트 한 애플리케이션을 롤백하는 단계이다.
+    방금전 업데이트 한 애플리케이션을 롤백하는 단계입니다.
     ~~~
     $ kubectl rollout undo deployments/oke-sample
     deployment.extensions/oke-sample rolled back
     ~~~
 
-    다시 브라우저에서 리플레쉬를 한다.
+    다시 브라우저에서 리플레쉬를 합니다.
 
     ![](images/update1.png)
 
-    버젼이 다시 `Version:v1.0`으로 변경되었음을 알 수 있다.
+    버젼이 다시 `Version:v1.0`으로 변경되었음을 알 수 있습니다.
 
 
 ## 대시보드
 
-클러스터를 생성할 때 대시보드를 같이 설치하였다.  
-대시보드는 기본적으로 ClusterIP로 배포되어 외부에서 접근이 불가하다.  
-이를 변경하여 외부에서 접근가능하도록 한다.
+클러스터를 생성할 때 대시보드를 같이 설치하였습니다.  
+대시보드는 기본적으로 ClusterIP로 배포되어 외부에서 접근이 불가합니다.  
+이를 변경하여 외부에서 접근가능하도록 합니다.
 
-1. 대시보드를 LoadBalancer 서버스로 변경한다.
+1. 대시보드를 LoadBalancer 서버스로 변경
 
     ~~~
     $ kubectl edit svc kubernetes-dashboard -n kube-system
     ~~~
-    type 을 `LoadBalancer` 로 변경한다.
+    type 을 `LoadBalancer` 로 변경합니다.
 
-    외부 IP를 확인한다.
+    외부 IP를 확인합니다.
 
     ~~~
     $ kubectl get svc -n kube-system
@@ -513,15 +537,15 @@
 
 
 
-1. 브라우저로 접속한다. 
+1. 브라우저로 접속 
  
-    접속하면, 로그인을 하기 위하여 토큰을 입력해야 한다.
+    접속하면, 로그인을 하기 위하여 토큰을 입력해야 합니다.
     
     ![](images/dashboard1.png)
 
-1. 토큰을 얻는다.
+1. 토큰을 얻기
 
-    토큰은 다음과 같이 얻을 수 있다. 
+    토큰은 다음과 같이 얻을 수 있습니다. 
 
     ~~~
     $ TOKENNAME=`kubectl -n kube-system get serviceaccount/kubernetes-dashboard -o jsonpath='{.secrets[0].name}'`
@@ -531,13 +555,13 @@
     $ echo $TOKEN
     ~~~
 
-    출력된 토튼의 값을 복사하여 로그인을 한다.
+    출력된 토튼의 값을 복사하여 로그인을 합니다.
 
-    로그인이 완료되면 다음과 같이 화면이 나온다. 
+    로그인이 완료되면 다음과 같이 화면이 나옵니다. 
     
     ![](images/dashboard2.png)
 
->    만약 권한이 없다는 오류가 뜨면 다음과 같이 명령한다.
+>    만약 권한이 없다는 오류가 뜨면 다음과 같이 명령합니다.
 >
 >    ~~~
 >    $ kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
