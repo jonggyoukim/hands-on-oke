@@ -187,6 +187,18 @@
     6788ecb29b3a        shiftyou/oke-mysql   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3306->3306/tcp, 33060/tcp   mydb
     ~~~
 
+    만약 방금 수행한 oke-sample 애플리케이션이 수행되는 myapp 컨테이너가 수행되지 않으면, mysql이 리슨하기 전에 어플리케이션을 수행하여 접속불가로 시작하지 못한 것이다. 이때는 다시 컨테이너를 시작하면 된다.
+
+    ~~~
+    docker start myapp
+    ~~~
+
+    그리고 다시 상태를 본다.
+    
+    ~~~
+    docker ps 
+    ~~~
+
 1. 테스트 하기
 
     이전 애플리케이션 테스트와 마찬가지로 클라우드쉘을 사용하여 클라우드의 네트워크를 사용할 수 없어 브라우저로는 접근이 불가능하다. 그래서 curl로 확인해 보도록 한다.
