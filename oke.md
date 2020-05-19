@@ -128,24 +128,22 @@
 
     - \<태넌시-네임스페이스>
     
-       좌측 상위메뉴에서 `개발자서비스 > 레지스트리(OCIR)`을 선택하면 다음과 같은 화면이 보여집니다.
+      좌측 상위메뉴에서 `개발자서비스 > 레지스트리(OCIR)`을 선택하면 다음과 같은 화면이 보여집니다.
 
-        ![](images/oke4.png)
+      ![](images/oke4.png)
 
-        위 화면에서 빨간 박스 부분인 *`cnriar6c4yj1`* 라는 명이 ***<태넌시-네임스페이스>*** 입니다. 이를 이용하여 로그인을 합니다.
-
- 
-
+      위 화면에서 빨간 박스 부분인 *`cnriar6c4yj1`* 라는 명이 ***<태넌시-네임스페이스>*** 입니다. 이를 이용하여 로그인을 합니다.
+    
     - \<사용자ID>
 
       우측 상단의 ![프로파일](images/profile-icon.png) 아이콘을 클릭하고 `사용자 설정` 을 선택합니다.
 
-        ![](images/oke1.png)
+      ![](images/oke1.png)
 
-        ![](images/oke5.png)
-
-        위의 화면에서 빨간 박스 부분인 *`oracleidentitycloudservice/jonggyou.kim@oracle.com`* 라는 명이 ***<사용자ID>*** 입니다.  
-        간단히 *jonggyou.kim@oracle.com* 으로 나타나지 않고 *oracleidentitycloudservice/jonggyou.kim@oracle.com* 로 나타나는 이유는 Oracle Identity Cloud Service 에서 연합되었기 때문입니다. 
+      ![](images/oke5.png)
+      
+      위의 화면에서 빨간 박스 부분인 *`oracleidentitycloudservice/jonggyou.kim@oracle.com`* 라는 명이 ***<사용자ID>*** 입니다.  
+      간단히 *jonggyou.kim@oracle.com* 으로 나타나지 않고 *oracleidentitycloudservice/jonggyou.kim@oracle.com* 로 나타나는 이유는 Oracle Identity Cloud Service 에서 연합되었기 때문입니다. 
 
     Username 항목에는 위의 <태넌시-네임스페이스>/<사용자ID> 를 입력합니다. 위의 화면을 예를 들면 다음과 같습니다.
 
