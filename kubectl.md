@@ -526,8 +526,6 @@
     ~~~
     $ TOKENNAME=`kubectl -n kube-system get serviceaccount/kubernetes-dashboard -o jsonpath='{.secrets[0].name}'`
 
-    $ echo $TOKENNAME
-
     $ TOKEN=`kubectl -n kube-system get secret $TOKENNAME -o jsonpath='{.data.token}'| base64 --decode`
 
     $ echo $TOKEN
