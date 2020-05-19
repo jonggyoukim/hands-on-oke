@@ -5,9 +5,11 @@
 
 # Docker Registry 에 push 하기
 
-도커 이미지를 레지스트리에 push 하기 위해서는 login을 해야 합니다.
+도커 이미지를 푸시할 대상인 레지스트리는 두가지로 설명합니다.
+- Docker Hub (hub.docker.com)
+- OCIR (Oracle Cloud Infrastructure Registry)
 
-## hub.docker.com 에 푸시하기 - Public
+## Docker Hub 에 푸시하기
 
 1. login 하기
 
@@ -70,7 +72,7 @@
 
     >누구나 사용 가능한 이미지로 Kubernetes 에서도 secret 정보 필요없이 사용 가능하다.
 
-## OCIR(Oracle Cloud Infrastructure Registry)에 푸시하기 - Private
+## OCIR 에 푸시하기
 
 1. token 만들기
 
