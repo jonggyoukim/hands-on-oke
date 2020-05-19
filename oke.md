@@ -143,7 +143,7 @@
       ![](images/oke5.png)
       
       위의 화면에서 빨간 박스 부분인 `oracleidentitycloudservice/jonggyou.kim@oracle.com` 라는 명이 **\<사용자ID\>** 입니다.  
-      간단히 _jonggyou.kim@oracle.com_ 으로 나타나지 않고 _oracleidentitycloudservice/jonggyou.kim@oracle.com_ 로 나타나는 이유는 Oracle Identity Cloud Service 에서 연합된 계정의 경우 _oracleidentitycloudservice/_ 가 추가 되었기 때문입니다.
+      간단히 _jonggyou.kim@oracle.com_ 으로 나타나지 않고 _oracleidentitycloudservice/jonggyou.kim@oracle.com_ 로 나타나는 이유는 Oracle Identity Cloud Service 에서 연합된 계정의 경우 _"oracleidentitycloudservice/"_ 가 추가 되었기 때문입니다.
 
     Username 항목에는 위의 <태넌시-네임스페이스>/<사용자ID> 를 입력합니다. 위의 화면을 예를 들면 다음과 같습니다.
 
