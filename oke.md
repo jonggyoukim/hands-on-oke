@@ -143,6 +143,7 @@
       ![](images/oke5.png)
       
       위의 화면에서 빨간 박스 부분인 `oracleidentitycloudservice/jonggyou.kim@oracle.com` 라는 명이 **\<사용자ID\>** 입니다.  
+
       
       간단히 `jonggyou.kim@oracle.com` 으로 나타나지 않고 `oracleidentitycloudservice/jonggyou.kim@oracle.com` 로 나타나는 이유는 Oracle Identity Cloud Service 에서 연합된 계정의 경우 `oracleidentitycloudservice/` 가 추가 되었기 때문입니다.
 
