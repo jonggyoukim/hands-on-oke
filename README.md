@@ -1,6 +1,11 @@
-# hands-on-oke
+![](images/hands-on-oke.png)
 
 본 핸즈온은 OCI(Oracle Cloud Infrastructure) 기반으로 구성되어 있습니다.
+
+# hands-on-oke
+
+
+다음과 같은 절차로 설명합니다.
 
 ![](images/step0.png)
 
