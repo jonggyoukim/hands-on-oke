@@ -505,7 +505,9 @@
 
     방금전 업데이트 한 애플리케이션을 롤백하는 단계입니다.
     ~~~
-    $ kubectl rollout undo deployments/oke-sample deployment.extensions/oke-sample rolled back
+    $ kubectl rollout undo deployments/oke-sample 
+
+    deployment.extensions/oke-sample rolled back
     ~~~
 
     다시 브라우저에서 리플레쉬를 합니다.
